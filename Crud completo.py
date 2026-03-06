@@ -107,6 +107,11 @@ while True:
 		if len(produtos) < 1:
 			print("Não há produtos")
 		else:
+			with open("estoque.txt", "w") as arquivo:
+				for p in produtos:
+					linha = f"{p['id']};{p['nome']};{p['valor']};{p['quantidade']}\n"
+					arquivo.write(linha)
+		
 			try:
 				print("=== RELATÓRIO DE ESTOQUE ===")
 				for produto in produtos:
