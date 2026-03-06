@@ -4,7 +4,7 @@ class Veiculo:
 		self.modelo = modelo
 	
 	def buzinar(self):
-		print("Bibibi")
+		print("Carro: Bibibi")
 		
 class Moto(Veiculo):
 	def __init__(self, marca, modelo, cilindrada):
@@ -17,9 +17,18 @@ class Moto(Veiculo):
 	def detalhes(self):
 		print(self.marca, self.modelo, self.cilindrada)
 		
+	def buzinar(self):
+		print("Moto: bi-bi")
+		
+class Caminhao(Veiculo):
+		def buzinar(self):
+			print("Caminhão: FOM!")
+		
 meu_carro = Veiculo("Honda", "Civic")
 minha_moto = Moto("Kawasaki", "ninja", "100")
+meu_caminhao = Caminhao("Scania", "r450")
 
-meu_carro.buzinar()
-minha_moto.empinar()
-minha_moto.detalhes()
+veiculos = [meu_carro, minha_moto, meu_caminhao]
+
+for veiculo in veiculos:
+	veiculo.buzinar()
