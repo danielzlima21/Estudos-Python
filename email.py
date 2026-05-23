@@ -1,3 +1,5 @@
+#mensagem de error caso a caixa de mensagens esteja vazia, mensagem e enviada mas mostra erro
+
 usuarios = []
 
 def criar_conta():
@@ -9,38 +11,40 @@ def criar_conta():
 def logar():
     verificar_nome = input('Digite seu nome de usuario: ')
     verificar_senha = input('Digite sua senha: ')
-    encontrado = False
+    usuario_logado = False
     for u in usuarios:
         if verificar_nome == u['nome'] and verificar_senha == u['senha']:
-            encontrado = True
+            usuario_logado = True
             print(f'=== Olá, {u["nome"]} ===')
             print('1 - enviar email')
             print('2 - ver caixa')
             print('3 - logout')
 
             while True:
-                menu = int(input('Digite: '))
-                if menu in (1, 2 ,3):
-                    break
-                else:
-                    print('Ação inválida!')
+
+                while True:
+                    menu = int(input('Digite: '))
+                    if menu in (1, 2 ,3):
+                        break
+                    else:
+                        print('Ação inválida!')
                 
-            while True:
                 if menu == 1:
                     enviar_para = input('digite o nome do remetente: ')
-                    encontrado = False
+                    usuario_encontrado = False
                     for u_receber in usuarios:
-                        if enviar_para != u['nome'] and enviar_para == u_receber:
-                            encontrado = True
+                        if u_receber['nome'] == enviar_para and u_receber['nome'] != u['nome']:
+                            usuario_encontrado = True
                             mensagem = input('Digite a mensagem: ')
                             u_receber['caixa'].append(mensagem)
                         else:
-                            ('usuario não encontrado ou nao é possivel enviar mensagem a si mesmo')
-                    if encontrado == False:
+                            print('usuario não encontrado ou nao é possivel enviar mensagem a si mesmo')
+                            break
+                    if usuario_encontrado == False:
                         print('Usuario não encontrado!')
                         
                 elif menu == 2:
-                    print(f'=== CAIXA DE MENSAGEMS DE {u} ===')
+                    print(f'=== CAIXA DE MENSAGEMS DE {u["nome"]} ===')
                     for mensagem in u['caixa']:
                         print(mensagem)
                         print()
@@ -50,7 +54,7 @@ def logar():
                     break                     
         else:
             print('Nome ou senha incorretos')
-    if encontrado == False:
+    if usuario_logado == False:
         print('Usuario não encontrado')
 
 def mostrar_menu():
