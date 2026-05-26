@@ -1,8 +1,10 @@
 #auto open, estatisticas, função, aumentar sorte, loja, aumentar inventario, capacidade de inventario
 
-import random
+import random, json, time
 
 player_coin = 10000
+player_inventory_max = 10
+player_inventory = []
 sorte = 1
 
 #estatisticas
@@ -12,9 +14,7 @@ total_lendarios_pegos = 0
 vendas_realizadas = 0
 baus_abertos = 0
 dinheiro_ganho = 0
-mais_caro = 0
-
-player_inventory = []
+mais_caro = None
 
 bau_de_madeira = [{'nome': 'papel', 'valor': 1, 'raridade': 'comun'},
                   {'nome': 'lapis', 'valor': 2, 'raridade': 'epico'},
@@ -46,14 +46,24 @@ def checar_mais_caro():
         if iten['valor'] > maior:
             mais_caro = iten
 
+#verificar
+def checar_inventario(iten_add):
+    global player_inventory
+    player_itens_in_inventory = len(player_inventory)
+    
+    if player_itens_in_inventory < player_inventory_max:
+        player_inventory.append(iten_add)
+        return True
+    else:
+        print(f'inventário cheio ({player_itens_in_inventory}/{player_inventory_max})')
+        return False
+
 def abrir_bau(bau, valor):
     global player_coin, baus_abertos
 
     if player_coin < valor:
         print(f'moedas insuficientes, suas moedas: {player_coin}')
     else:
-        player_coin -= valor
-        baus_abertos += 1
         numero = random.randint(1, 100)
         if numero <= 10:
             raridade = 'lendario'
@@ -65,11 +75,15 @@ def abrir_bau(bau, valor):
         
         for iten in(bau):
             if iten['raridade'] == raridade:
+                itens_validos = []
                 print(f'debug:{iten}')
-                itens.append(iten)
-                iten = random.choice(itens)
-                player_inventory.append(iten)
-                checar_raridade(raridade)
+                itens_validos.append(iten)
+                iten_add = random.choice(itens_validos)
+                adicionado = checar_inventario(iten_add)
+                if adicionado:
+                    player_coin -= valor
+                    baus_abertos += 1
+                    checar_raridade(raridade)
                 print(f'debug:{player_inventory}')
 
 while True:
