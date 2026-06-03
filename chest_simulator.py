@@ -1,4 +1,6 @@
-#auto open, estatisticas, função, aumentar sorte, loja, aumentar inventario, capacidade de inventario
+# auto open, estatisticas, função, aumentar sorte, loja, aumentar inventario, capacidade de inventario, save & load json system,
+# rebirth que aumenta a sorte, requer certos itens
+# online, trade, ranking, perfil, conta
 
 import random, json, time
 
@@ -46,17 +48,51 @@ def checar_mais_caro():
         if iten['valor'] > maior:
             mais_caro = iten
 
-#verificar
 def checar_inventario(iten_add):
     global player_inventory
-    player_itens_in_inventory = len(player_inventory)
     
+    player_itens_in_inventory = len(player_inventory)
+
     if player_itens_in_inventory < player_inventory_max:
         player_inventory.append(iten_add)
         return True
     else:
         print(f'inventário cheio ({player_itens_in_inventory}/{player_inventory_max})')
         return False
+
+def checar_aumentar_invetario(valor_aumentar, valor):
+    global player_inventory_max, player_coin
+
+    if player_coin >= valor:
+        player_coin -= valor
+        player_inventory_max += valor_aumentar
+    else:
+        print('Moedas insuficientes')
+
+def aumentar_inventario():
+    global player_inventory_max, player_coin
+
+    while True:
+        print('1 - aumentar 20 de espaço - 15$')
+        print('2 - aumentar 50 de espaço - 50$')
+        print('3 - aumentar 100 de espaço - 100$')
+        print('4 - sair')
+
+        while True:
+            menu = int(input('digite: '))
+            if menu in (1, 2, 3, 4):
+                break
+            else:
+                print('ação inválida')
+        
+        if menu == 1:
+            checar_aumentar_invetario(20, 15)
+        elif menu == 2:
+            checar_aumentar_invetario(50, 50)
+        elif menu == 3:
+            checar_aumentar_invetario(100, 100)
+        elif menu == 4:
+            break
 
 def abrir_bau(bau, valor):
     global player_coin, baus_abertos
@@ -84,21 +120,21 @@ def abrir_bau(bau, valor):
                     player_coin -= valor
                     baus_abertos += 1
                     checar_raridade(raridade)
-                print(f'debug:{player_inventory}')
+                    print(f'debug:{player_inventory}')
 
 while True:
-    print(f'Moedas: {player_coin}')
+    print(f'Moedas: {player_coin} | Inventário: ({len(player_inventory)}/{player_inventory_max})')
     print('~' * 30)
     print('1 - [10$] - bau de madeira')
     print('2 - [40$] - bau de ouro')
     print('3 - [80$] - bau de diamante')
     print('~' * 30)
     print('4 - ver inevtario')
-    print('5 - vender tudo')
+    print('5 - aumentar inventário')
+    print('6 - vender tudo')
     print('~' * 30)
-    print('6 - estatísticas')
+    print('7 - estatísticas')
 
-    itens = []
     checar_mais_caro()
 
     menu = int(input('digite: '))
@@ -123,6 +159,9 @@ while True:
             print(f'{total}$ Acumulado')
 
     elif menu == 5:
+        aumentar_inventario()
+
+    elif menu == 6:
         if not player_inventory:
             print('inventário vazio')
         else:
@@ -134,7 +173,7 @@ while True:
             dinheiro_ganho += total
             print(f'você recebeu: {total}$ e ficou com: {player_coin}$')
 
-    elif menu == 6:
+    elif menu == 7:
         print('=== ESTATISTÍCAS ===')
         print(f'dinheiro atual: {player_coin}')
         print(f'dinheiro ganho ate agora: {dinheiro_ganho}')
