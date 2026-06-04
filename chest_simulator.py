@@ -48,6 +48,36 @@ def checar_mais_caro():
         if iten['valor'] > maior:
             mais_caro = iten
 
+def auto_open(bau, valor):
+    while True:
+        if len(player_inventory) >= player_inventory_max:
+            print('inventario cheio')
+            break
+        if player_coin < valor:
+            print('moedas insuficientes')
+            break
+        abrir_bau(bau, valor)
+
+def auto_open_menu():
+    print('1 - bau de madeira')
+    print('2 - bau de ouro')
+    print('3 - bau de diamante')
+
+    while True:
+        menu = int(input('Digite: '))
+
+        if menu in (1, 2, 3):
+            break
+        else:
+            print('digite um numero válido')
+    
+    if menu == 1:
+        auto_open(bau_de_madeira, 10)
+    elif menu == 2:
+        auto_open(bau_de_ouro, 40)
+    elif menu == 3:
+        auto_open(bau_de_diamante, 80)
+        
 def checar_inventario(iten_add):
     global player_inventory
     
@@ -134,6 +164,7 @@ while True:
     print('6 - vender tudo')
     print('~' * 30)
     print('7 - estatísticas')
+    print('8 - auto open')
 
     checar_mais_caro()
 
@@ -183,3 +214,6 @@ while True:
         print(f'total de epicos: {total_epicos_pegos}')
         print(f'total de lendarios: {total_lendarios_pegos}')
         print(f'iten mais caro pego: {mais_caro}')
+
+    elif menu == 8:
+        auto_open_menu()
