@@ -24,7 +24,7 @@ class ContaBancaria:
         if valor > 0 and valor <= self.saldo:
             self.saldo -= valor
             conta_destino.depositar(valor)
-            print(f'{self.titular} depositou: {valor}, para: {conta_destino.titular}')
+            print(f'{self.titular} depositou: {valor}$, para: {conta_destino.titular}')
         else:
             print('Saldo insuficiente')
 
@@ -53,7 +53,7 @@ def depositar():
     for conta in contas:
         if conta.numero_conta == num_da_conta:
             encontrado = True
-            valor = int(input('Digite o valor para depositar: '))
+            valor = float(input('Digite o valor para depositar: '))
             conta.depositar(valor)
     if encontrado ==  False:
         print('Número não encontrado!')
@@ -64,14 +64,14 @@ def sacar():
     for conta in contas:
         if conta.numero_conta == num_da_conta:
             encontrado = True
-            valor = int(input('Digite o valor para sacar: '))
+            valor = float(input('Digite o valor para sacar: '))
             conta.sacar(valor)
     if encontrado ==  False:
         print('Número não encontrado!')
 
 def transferir():
     conta_origem = int(input('digite o numero da conta origem: '))
-    valor = int(input('digite o valor: '))
+    valor = float(input('digite o valor: '))
     conta_destino = int(input('digite o numero da conta destino: '))
     origem_encontrado = False
     destino_encontrado = False
@@ -129,13 +129,5 @@ def mostrar_menu():
             transferir()
         elif menu == 6:
             ver_saldo()
-    
-# teste = ContaBancaria('Daniel', 100, 1000)
-# teste2 = ContaBancaria('Zacarias', 100, 700)
-# print(teste.transferir(teste2, 5000))
-# print(teste2.saldo)
-# print(teste2.mostrar_saldo())
-# criar_conta()
-# listar_contas()
 
 mostrar_menu()
