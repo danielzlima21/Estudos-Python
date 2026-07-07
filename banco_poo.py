@@ -5,11 +5,13 @@ class ContaBancaria:
         self.titular = titular
         self.numero_conta = numero_conta
         self.saldo = saldo
+        self.historico = []
 
     def depositar(self, valor):
         if valor > 0:
             self.saldo += valor
             print(f'Depositado: {valor}, Saldo atual: R${self.saldo}')
+            self.historico.append(f'Deposito de: {valor}')
         else:
             print('Valor não pode ser menor ou igual á zero!')
         
@@ -17,6 +19,7 @@ class ContaBancaria:
         if valor <= self.saldo and valor > 0:
             self.saldo -= valor
             print(f'Saque realizado, Saldo: R${self.saldo}')
+            self.historico.append(f'Saque de: R${valor}')
         else:
             print('Saldo insuficiente')
         
@@ -25,11 +28,20 @@ class ContaBancaria:
             self.saldo -= valor
             conta_destino.depositar(valor)
             print(f'{self.titular} depositou: {valor}$, para: {conta_destino.titular}')
+            self.historico.append(f'Deposito de: R${valor} para: {conta_destino.titular}')
         else:
             print('Saldo insuficiente')
 
     def mostrar_saldo(self):
         print(f'Titular: {self.titular}, Conta: {self.numero_conta}, Saldo: R${self.saldo}')
+
+    def mostrar_historico(self):
+        if not self.historico:
+            print('Histórico vazio')
+        else:
+            for i in self.historico:
+                print(i)
+                print()
     
 def criar_conta():
     nome = input('digite seu nome: ')
@@ -99,6 +111,16 @@ def ver_saldo():
             conta.mostrar_saldo()
     if encontrado ==  False:
         print('Número não encontrado!')
+
+def ver_historico():
+    num_da_conta = int(input('Digite o numero da conta: '))
+    encontrado = False
+    for conta in contas:
+        if conta.numero_conta == num_da_conta:
+            encontrado = True
+            conta.mostrar_historico()
+    if encontrado ==  False:
+        print('Número não encontrado!')
         
 
 def mostrar_menu():
@@ -109,10 +131,11 @@ def mostrar_menu():
         print('4 - Sacar')
         print('5 - Transferir')
         print('6 - Ver Saldo')
+        print('7 - Ver historico')
 
         while True:
             menu = int(input('Digite: '))
-            if menu in (1, 2, 3, 4, 5, 6) :
+            if menu in (1, 2, 3, 4, 5, 6, 7) :
                 break
             else:
                 print('Opção inválida')
@@ -129,5 +152,10 @@ def mostrar_menu():
             transferir()
         elif menu == 6:
             ver_saldo()
+        elif menu == 7:
+            ver_historico()
+
+def auto_play(bots):
+    pass
 
 mostrar_menu()
