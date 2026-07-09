@@ -46,8 +46,15 @@ class ContaBancaria:
 def criar_conta():
     nome = input('digite seu nome: ')
     numero_conta  = int(input('digite o numero da sua conta: '))
-    nova_conta = ContaBancaria(nome, numero_conta, 0)
-    contas.append(nova_conta)
+    encontrado = False
+    for conta in contas:
+        if conta.numero_conta == numero_conta:
+            encontrado = True
+            print('Numero indisponivel!')
+            break
+    if encontrado == False:
+        nova_conta = ContaBancaria(nome, numero_conta, 0)
+        contas.append(nova_conta)
 
 def listar_contas():
     if not contas:
@@ -122,7 +129,6 @@ def ver_historico():
     if encontrado ==  False:
         print('Número não encontrado!')
         
-
 def mostrar_menu():
     while True:
         print('1 - Criar conta')
