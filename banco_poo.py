@@ -56,6 +56,12 @@ def criar_conta():
         nova_conta = ContaBancaria(nome, numero_conta, 0)
         contas.append(nova_conta)
 
+def buscar_conta(numero_conta):
+    for conta in contas:
+        if numero_conta == conta.numero_conta:
+            return conta
+    return None
+
 def listar_contas():
     if not contas:
         print('Não há contas!')
@@ -68,65 +74,49 @@ def listar_contas():
 
 def depositar():
     num_da_conta = int(input('Digite o numero da conta: '))
-    encontrado = False
-    for conta in contas:
-        if conta.numero_conta == num_da_conta:
-            encontrado = True
-            valor = float(input('Digite o valor para depositar: '))
-            conta.depositar(valor)
-    if encontrado ==  False:
+    conta = buscar_conta(num_da_conta)
+    if conta: 
+        valor = float(input('Digite o valor para depositar: '))
+        conta.depositar(valor)
+    else:
         print('Número não encontrado!')
 
 def sacar():
     num_da_conta = int(input('Digite o numero da conta: '))
-    encontrado = False
-    for conta in contas:
-        if conta.numero_conta == num_da_conta:
-            encontrado = True
-            valor = float(input('Digite o valor para sacar: '))
-            conta.sacar(valor)
-    if encontrado ==  False:
+    conta = buscar_conta(num_da_conta)
+    if conta:
+        valor = float(input('Digite o valor para sacar: '))
+        conta.sacar(valor)
+    else:
         print('Número não encontrado!')
 
 def transferir():
-    conta_origem = int(input('digite o numero da conta origem: '))
+    num_conta_origem = int(input('digite o numero da conta origem: '))
     valor = float(input('digite o valor: '))
-    conta_destino = int(input('digite o numero da conta destino: '))
-    origem_encontrado = False
-    destino_encontrado = False
-    for conta in contas:
-        if conta.numero_conta == conta_origem:
-            origem_encontrado = True
-            conta_origem = conta
-        if conta.numero_conta == conta_destino:
-            destino_encontrado = True
-            conta_destino = conta
-        if origem_encontrado and destino_encontrado:
-            conta_origem.transferir(conta_destino, valor)
-            break
-    if destino_encontrado == False:
-        print('Conta destino não encontrada')
-    if origem_encontrado == False:
+    num_conta_destino = int(input('digite o numero da conta destino: '))
+    conta_origem = buscar_conta(num_conta_origem)
+    conta_destino = buscar_conta(num_conta_destino)
+    if not conta_origem:
         print('Conta origem não encontrada')
+    elif not conta_destino:
+        print('Conta destino não encontrada')
+    else:
+        conta_origem.transferir(conta_destino, valor)
 
 def ver_saldo():
     num_da_conta = int(input('Digite o numero da conta: '))
-    encontrado = False
-    for conta in contas:
-        if conta.numero_conta == num_da_conta:
-            encontrado = True
-            conta.mostrar_saldo()
-    if encontrado ==  False:
+    conta = buscar_conta(num_da_conta)
+    if conta:
+        conta.mostrar_saldo()
+    else:
         print('Número não encontrado!')
 
 def ver_historico():
     num_da_conta = int(input('Digite o numero da conta: '))
-    encontrado = False
-    for conta in contas:
-        if conta.numero_conta == num_da_conta:
-            encontrado = True
-            conta.mostrar_historico()
-    if encontrado ==  False:
+    conta = buscar_conta(num_da_conta)
+    if conta:
+        conta.mostrar_historico()
+    else:
         print('Número não encontrado!')
         
 def mostrar_menu():
@@ -141,7 +131,7 @@ def mostrar_menu():
 
         while True:
             menu = int(input('Digite: '))
-            if menu in (1, 2, 3, 4, 5, 6, 7) :
+            if menu in (1, 2, 3, 4, 5, 6, 7):
                 break
             else:
                 print('Opção inválida')
